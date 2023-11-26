@@ -1,34 +1,27 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet, ImageBackground } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const Admin = ({ route }) => {
+const AdminLogin = ({ route }) => {
   const { adminName } = route.params;
+  const navigation = useNavigation();
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const [number, setNumber] = useState('');
-
-  const createAdminAccount = () => {
-    // You can perform any validation or save logic here
-
-    // For simplicity, let's just log the entered details
-    console.log('Admin Details:', {
-      firstName,
-      lastName,
-      username,
-      password,
-      email,
-      number,
-    });
-  };
+  const [adminUsername, setAdminUsername] = useState('');
+  const [adminPassword, setAdminPassword] = useState('');
 
   const loginAsAdmin = () => {
-    // You can perform login authentication logic here
-    // For simplicity, let's just log the adminName
+    console.log('Admin Login Details:', {
+      adminUsername,
+      adminPassword,
+    });
+
+    // For now, just log the adminName and navigate to AdminHome
     console.log('Logged in as:', adminName);
+    navigation.navigate('AdminHome'); // Navigate to AdminHome after successful login
+  };
+
+  const navigateToAdminCreateAccount = () => {
+    navigation.navigate('AdminCreateAccount', { adminName });
   };
 
   return (
@@ -38,51 +31,25 @@ const Admin = ({ route }) => {
     >
       <View style={styles.container}>
         <View style={styles.messageContainer}>
-          <Text>Create your account.</Text>
+          <Text>Login as Admin.</Text>
           <TextInput
             style={styles.input}
-            placeholder="First Name"
-            value={firstName}
-            onChangeText={(text) => setFirstName(text)}
+            placeholder="Admin Username"
+            value={adminUsername}
+            onChangeText={(text) => setAdminUsername(text)}
           />
           <TextInput
             style={styles.input}
-            placeholder="Last Name"
-            value={lastName}
-            onChangeText={(text) => setLastName(text)}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Username"
-            value={username}
-            onChangeText={(text) => setUsername(text)}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            value={password}
-            onChangeText={(text) => setPassword(text)}
+            placeholder="Admin Password"
+            value={adminPassword}
+            onChangeText={(text) => setAdminPassword(text)}
             secureTextEntry={true}
           />
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-            keyboardType="email-address"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Number"
-            value={number}
-            onChangeText={(text) => setNumber(text)}
-            keyboardType="numeric"
-          />
-          <View style={styles.buttonContainer}>
-            <Button title="Create" onPress={createAdminAccount} color="#6F4E37" />
-          </View>
           <View style={styles.buttonContainer}>
             <Button title="Login" onPress={loginAsAdmin} color="#6F4E37" />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button title="Create Account" onPress={navigateToAdminCreateAccount} color="#6F4E37" />
           </View>
         </View>
       </View>
@@ -122,4 +89,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Admin;
+export default AdminLogin;
