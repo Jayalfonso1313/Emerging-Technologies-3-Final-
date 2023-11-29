@@ -20,10 +20,6 @@ const AdminLogin = ({ route }) => {
     navigation.navigate('AdminHome'); // Navigate to AdminHome after successful login
   };
 
-  const navigateToAdminCreateAccount = () => {
-    navigation.navigate('AdminCreateAccount', { adminName });
-  };
-
   return (
     <ImageBackground
       source={require('../assets/Ice.jpg')}
@@ -47,9 +43,6 @@ const AdminLogin = ({ route }) => {
           />
           <View style={styles.buttonContainer}>
             <Button title="Login" onPress={loginAsAdmin} color="#6F4E37" />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title="Create Account" onPress={navigateToAdminCreateAccount} color="#6F4E37" />
           </View>
         </View>
       </View>
