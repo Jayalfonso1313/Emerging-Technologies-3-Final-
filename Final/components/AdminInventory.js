@@ -162,7 +162,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 40,
     shadowRadius: 2,
-    marginBottom: 16,
   },
   tableHeader: {
     flexDirection: 'row',
