@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, FlatList, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 
 const AdminInventory = () => {
   const [inventory, setInventory] = useState([
@@ -11,6 +19,7 @@ const AdminInventory = () => {
 
   const [newItemName, setNewItemName] = useState('');
   const [newItemQuantity, setNewItemQuantity] = useState('');
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const addItem = () => {
     if (newItemName && newItemQuantity) {
@@ -21,8 +30,7 @@ const AdminInventory = () => {
       if (existingItemIndex !== -1) {
         setInventory((prevInventory) => {
           const updatedInventory = [...prevInventory];
-          updatedInventory[existingItemIndex].quantity +=
-            parseInt(newItemQuantity);
+          updatedInventory[existingItemIndex].quantity += parseInt(newItemQuantity);
           return updatedInventory;
         });
       } else {
@@ -39,6 +47,11 @@ const AdminInventory = () => {
       setNewItemName('');
       setNewItemQuantity('');
     }
+  };
+
+  const deleteItem = (itemId) => {
+    setInventory((prevInventory) => prevInventory.filter((item) => item.id !== itemId));
+    setSelectedItem(null); // Reset selected item after deletion
   };
 
   return (
@@ -59,23 +72,36 @@ const AdminInventory = () => {
           onChangeText={(text) => setNewItemQuantity(text)}
           keyboardType="numeric"
         />
-        <Button title="Add Item" onPress={addItem} />
+        <TouchableOpacity style={styles.addButton} onPress={addItem}>
+          <Text style={styles.addButtonText}>Add Item</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.tableContainer}>
         <View style={styles.tableHeader}>
-          <Text style={styles.columnHeader}>Item Name</Text>
-          <Text style={styles.columnHeader}>Quantity</Text>
+          <Text style={[styles.columnHeader, styles.itemColumn]}>Item Name</Text>
+          <Text style={[styles.columnHeader, styles.quantityColumn]}>Quantity</Text>
         </View>
 
         <FlatList
           data={inventory}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <View style={styles.tableRow}>
-              <Text style={styles.column}>{item.name}</Text>
-              <Text style={styles.column}>{item.quantity}</Text>
-            </View>
+            <TouchableOpacity
+              style={[styles.tableRow, selectedItem === item.id && styles.selectedItem]}
+              onPress={() => setSelectedItem(item.id === selectedItem ? null : item.id)}
+            >
+              <Text style={[styles.column, styles.itemColumn]}>{item.name}</Text>
+              <Text style={[styles.column, styles.quantityColumn]}>{item.quantity}</Text>
+              {selectedItem === item.id && (
+                <TouchableOpacity
+                  style={styles.deleteButtonContainer}
+                  onPress={() => deleteItem(item.id)}
+                >
+                  <Text style={styles.deleteButtonText}>Delete</Text>
+                </TouchableOpacity>
+              )}
+            </TouchableOpacity>
           )}
         />
       </View>
@@ -86,53 +112,98 @@ const AdminInventory = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 16,
+    backgroundColor: '#f4f4f4',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 16,
+    color: '#333',
   },
   formContainer: {
-    marginBottom: 20,
+    marginBottom: 16,
+    backgroundColor: 'white',
+    padding: 16,
+    borderRadius: 8,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
   },
   input: {
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
-    marginBottom: 10,
-    padding: 10,
+    marginBottom: 8,
+    paddingHorizontal: 8,
+    borderRadius: 4,
+  },
+  addButton: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 12,
+    borderRadius: 4,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  addButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   tableContainer: {
     flex: 1,
-    flexDirection: 'column',
+    backgroundColor: 'white',
+    borderRadius: 8,
+    padding: 15,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 40,
+    shadowRadius: 2,
+    marginBottom: 16,
   },
   tableHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    marginBottom: 10,
-    paddingBottom: 10,
+    marginBottom: 15,
+    borderBottomWidth: 3,
+    paddingBottom: 5,
   },
   columnHeader: {
-    fontSize: 18,
     fontWeight: 'bold',
     flex: 1,
-    textAlign: 'center',
+    textAlign: 'auto',
   },
   tableRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    alignItems: 'center',
     marginBottom: 10,
-    paddingBottom: 10,
+    borderWidth: 2,
+    borderColor: '#ddd',
+    borderRadius: 8,
   },
   column: {
-    fontSize: 16,
     flex: 1,
-    textAlign: 'center',
+  },
+  itemColumn: {
+    paddingLeft: 8,
+  },
+  quantityColumn: {
+    textAlign: 'auto',
+  },
+  deleteButtonContainer: {
+    backgroundColor: '#ff5555',
+    padding: 8,
+    borderRadius: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  deleteButtonText: {
+    color: 'white',
+  },
+  selectedItem: {
+    backgroundColor: '#e6f7ff', // Light blue for selected items
   },
 });
 
