@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, ImageBackground, Text, Image, Picker } from 'react-native';
-
-// Import your coffee shop logo image (replace '../assets/coffee_shop_logo.png' with the correct path)
 import CoffeeShopLogo from '../assets/coffee_shop_logo.png';
 
 const LoginPage = ({ navigation }) => {
@@ -10,9 +8,7 @@ const LoginPage = ({ navigation }) => {
   const [gender, setGender] = useState('');
 
   const proceedToHomePage = () => {
-    // Validate that all fields are filled before navigating
     if (name && age && gender) {
-      // You can perform any additional validation before navigating to the next page
       navigation.navigate('HomePage', { name, age, gender });
     } else {
       alert('Please fill in all fields.');
@@ -24,9 +20,7 @@ const LoginPage = ({ navigation }) => {
       source={require('../assets/background_image.png')}
       style={styles.backgroundImage}
     >
-      {/* New View for Coffee Shop Logo */}
       <View style={styles.logoContainer}>
-        {/* Add your coffee shop logo image here */}
         <Image
           source={CoffeeShopLogo}
           style={styles.logo}
@@ -51,7 +45,6 @@ const LoginPage = ({ navigation }) => {
             onChangeText={(text) => setAge(text)}
             keyboardType="numeric"
           />
-          {/* Replace TextInput with Picker for Gender */}
           <View style={styles.pickerContainer}>
             <Picker
               style={styles.picker}
@@ -83,10 +76,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   messageContainer: {
-    borderRadius: 8, // Match the borderRadius with the Picker
+    borderRadius: 8, 
     overflow: 'hidden',
     padding: 20,
-    backgroundColor: 'white', // Match the background color with the Picker
+    backgroundColor: 'white', 
     elevation: 5,
     margin: 10,
     width: 260,
@@ -113,7 +106,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: 'hidden',
   },
-  // New styles for the logo container and logo
   logoContainer: {
     alignItems: 'center',
     marginBottom: -150,
@@ -130,7 +122,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     margin: 10,
     width: 200,
-    backgroundColor: 'white', // Set background color
+    backgroundColor: 'white', 
   },
   picker: {
     height: 40,
