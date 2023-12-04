@@ -8,13 +8,13 @@ const LoginPage = ({ navigation }) => {
   const [gender, setGender] = useState('');
 
   const handleGenderChange = (text) => {
-    // Enforce uppercase for the first letter and lowercase for the rest
     const formattedGender = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
     setGender(formattedGender);
   };
 
   const proceedToHomePage = () => {
     if (name && age && gender) {
+      // Pass user data to HomePage screen
       navigation.navigate('HomePage', { name, age, gender });
     } else {
       alert('Please fill in all fields.');
