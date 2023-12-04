@@ -8,63 +8,64 @@ const ViewMenu = ({ route, navigation }) => {
   const [isCartVisible, setIsCartVisible] = useState(false);
 
   const coffeeMenu = [
-    { 
-      id: 1, 
-      name: 'Long Black', 
-      prices: { S: 50, M: 60, L: 70 }, 
-      sizes: ['S', 'M', 'L'], 
-      image: require('../assets/Cappuccino.jpg') 
+    {
+      id: 1,
+      name: 'Long Black',
+      prices: { S: 50, M: 60, L: 70 },
+      sizes: ['S', 'M', 'L'],
+      image: require('../assets/LongBlack.png')
     },
-    { 
-      id: 2, 
-      name: 'Cafe Latte', 
-      prices: { S: 69, M: 79, L: 89 }, 
-      sizes: ['S', 'M', 'L'], 
-      image: require('../assets/Cappuccino.jpg') 
+    {
+      id: 2,
+      name: 'Cafe Latte',
+      prices: { S: 69, M: 79, L: 89 },
+      sizes: ['S', 'M', 'L'],
+      image: require('../assets/CafeLatte.jpg')
     },
-    { 
-      id: 3, 
-      name: 'Cappuccino', 
-      prices: { S: 75, M: 85, L: 95 }, 
-      sizes: ['S', 'M', 'L'], 
-      image: require('../assets/Cappuccino.jpg') 
+    {
+      id: 3,
+      name: 'Cappuccino',
+      prices: { S: 75, M: 85, L: 95 },
+      sizes: ['S', 'M', 'L'],
+      image: require('../assets/Cappuccino.jpg')
     },
-    { 
-      id: 4, 
-      name: 'Spanish Latte', 
-      prices: { S: 79, M: 89, L: 99 }, 
-      sizes: ['S', 'M', 'L'], 
-      image: require('../assets/Cappuccino.jpg') 
+    {
+      id: 4,
+      name: 'Spanish Latte',
+      prices: { S: 79, M: 89, L: 99 },
+      sizes: ['S', 'M', 'L'],
+      image: require('../assets/SpanishLatte.jpg')
     },
-    { 
-      id: 5, 
-      name: 'Dark Mocha', 
-      prices: { S: 80, M: 95, L: 110 }, 
-      sizes: ['S', 'M', 'L'], 
-      image: require('../assets/Cappuccino.jpg') 
+    {
+      id: 5,
+      name: 'Dark Mocha',
+      prices: { S: 80, M: 95, L: 110 },
+      sizes: ['S', 'M', 'L'],
+      image: require('../assets/DarkMocha.jpg')
     },
-    { 
-      id: 6, 
-      name: 'French Vanilla', 
-      prices: { S: 75, M: 95, L: 120 }, 
-      sizes: ['S', 'M', 'L'], 
-      image: require('../assets/Cappuccino.jpg') 
+    {
+      id: 6,
+      name: 'French Vanilla',
+      prices: { S: 75, M: 95, L: 120 },
+      sizes: ['S', 'M', 'L'],
+      image: require('../assets/FrenchVanilla.jpg')
     },
-    { 
-      id: 7, 
-      name: 'Caramel Macchiato', 
-      prices: { S: 75, M: 95, L: 120 }, 
-      sizes: ['S', 'M', 'L'], 
-      image: require('../assets/Cappuccino.jpg') 
+    {
+      id: 7,
+      name: 'Caramel Macchiato',
+      prices: { S: 75, M: 95, L: 120 },
+      sizes: ['S', 'M', 'L'],
+      image: require('../assets/CaramelMacchiato.jpg')
     },
-    { 
-      id: 8, 
-      name: 'Hazelnut Macchiato', 
-      prices: { S: 75, M: 95, L: 120 }, 
-      sizes: ['S', 'M', 'L'], 
-      image: require('../assets/Cappuccino.jpg') 
+    {
+      id: 8,
+      name: 'Hazelnut Macchiato',
+      prices: { S: 75, M: 95, L: 120 },
+      sizes: ['S', 'M', 'L'],
+      image: require('../assets/HazelnutMacchiato.jpg')
     },
   ];
+
 
   const addToCart = (item, quantity, size) => {
     if (quantity > 0) {
@@ -80,7 +81,7 @@ const ViewMenu = ({ route, navigation }) => {
   };
 
   const calculateTotal = () => {
-    return cart.reduce((total, item) => total + item.prices[item.size] * item.quantity, 0).toFixed(0);
+    return cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(0);
   };
 
   const renderOrderStatus = () => {
@@ -97,10 +98,8 @@ const ViewMenu = ({ route, navigation }) => {
       style={styles.backgroundImage}
     >
       <View style={styles.container}>
-        <Text style={styles.welcomeText}>Welcome, {name}! 😊</Text>
-        <Text style={styles.menuDescription}>
-          {'\n'} Explore our delightful menu 👉☕👈 and treat yourself to the finest coffee and tea creations. Enjoy your sip! 😘{'\n'}
-        </Text>
+        <Text>Welcome Customer, {name}😊!</Text>
+        <Text>{'\n'} Here are our Menu 👉☕👈, Enjoy your Coffee and Tea 😘{'\n'} </Text>
         <FlatList
           data={coffeeMenu}
           keyExtractor={(item) => item.id.toString()}
@@ -114,7 +113,36 @@ const ViewMenu = ({ route, navigation }) => {
             setIsCartVisible(!isCartVisible);
           }}
         >
-          {/* ... (rest of the modal code remains unchanged) */}
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text>Your Cart:</Text>
+              {cart.map((item) => (
+                <CartItem key={item.cartItemId} item={item} removeFromCart={removeFromCart} />
+              ))}
+              <View style={styles.totalContainer}>
+                <Text>Total: ₱{calculateTotal()}</Text>
+              </View>
+              <View style={styles.buttonContainerModal}>
+                <Pressable
+                  style={styles.backButton}
+                  onPress={() => {
+                    setIsCartVisible(!isCartVisible);
+                  }}
+                >
+                  <Text>Back</Text>
+                </Pressable>
+                <Pressable
+                  style={styles.confirmButton}
+                  onPress={() => {
+                    renderOrderStatus(); // Call renderOrderStatus to navigate to OrderStatus screen
+                    setIsCartVisible(!isCartVisible);
+                  }}
+                >
+                  <Text>Confirm</Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
         </Modal>
       </View>
     </ImageBackground>
@@ -164,7 +192,7 @@ const CartItem = ({ item, removeFromCart }) => {
   return (
     <View key={item.cartItemId} style={styles.cartItem}>
       <Text>
-        {item.name} - ₱{item.prices[item.size].toFixed(0)} (Size: {item.size}, Qty: {item.quantity})
+        {item.name} - ₱{item.price.toFixed(0)} (Size: {item.size}, Qty: {item.quantity})
       </Text>
       <View style={styles.removeButtonContainer}>
         <Button title="Remove" onPress={() => removeFromCart(item.cartItemId)} color="#C19A6B" />
@@ -184,16 +212,6 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover', // or 'stretch'
-  },
-  welcomeText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  menuDescription: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 20,
   },
   menuItem: {
     flexDirection: 'column',
