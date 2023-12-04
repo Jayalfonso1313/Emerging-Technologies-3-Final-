@@ -1,6 +1,5 @@
-// Import necessary components from 'react-native'
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, ImageBackground, Text, Image } from 'react-native';
+import { View, TextInput, Button, StyleSheet, ImageBackground, Text, Image, Picker } from 'react-native';
 
 // Import your coffee shop logo image (replace '../assets/coffee_shop_logo.png' with the correct path)
 import CoffeeShopLogo from '../assets/coffee_shop_logo.png';
@@ -52,13 +51,18 @@ const LoginPage = ({ navigation }) => {
             onChangeText={(text) => setAge(text)}
             keyboardType="numeric"
           />
-          <TextInput
-            style={styles.input}
-            placeholder="Your Gender (e.g., male or female)"
-            placeholderTextColor="#6F4E37"
-            value={gender}
-            onChangeText={(text) => setGender(text)}
-          />
+          {/* Replace TextInput with Picker for Gender */}
+          <View style={styles.pickerContainer}>
+            <Picker
+              style={styles.picker}
+              selectedValue={gender}
+              onValueChange={(itemValue) => setGender(itemValue)}
+            >
+              <Picker.Item label="Select Gender" value="" />
+              <Picker.Item label="Male" value="male" />
+              <Picker.Item label="Female" value="female" />
+            </Picker>
+          </View>
           <View style={styles.buttonContainer}>
             <Button title="Enter" onPress={proceedToHomePage} color="#6F4E37" />
           </View>
@@ -79,10 +83,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   messageContainer: {
-    borderRadius: 10,
+    borderRadius: 8, // Match the borderRadius with the Picker
+    overflow: 'hidden',
     padding: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    backgroundColor: 'white', // Match the background color with the Picker
     elevation: 5,
+    margin: 10,
+    width: 260,
   },
   title: {
     fontSize: 24,
@@ -94,13 +101,15 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: '#6F4E37',
     borderWidth: 1,
+    borderRadius: 8,
+    overflow: 'hidden',
     margin: 10,
     padding: 10,
     width: 200,
     color: '#6F4E37',
   },
   buttonContainer: {
-    marginTop: 10,
+    marginTop: 20,
     borderRadius: 8,
     overflow: 'hidden',
   },
@@ -110,9 +119,22 @@ const styles = StyleSheet.create({
     marginBottom: -150,
   },
   logo: {
-    width: 300, // Adjust the width as needed
-    height: 300, // Adjust the height as needed
-    resizeMode: 'contain', // or 'cover' depending on your logo dimensions
+    width: 300,
+    height: 300,
+    resizeMode: 'contain',
+  },
+  pickerContainer: {
+    borderColor: '#6F4E37',
+    borderWidth: 1,
+    borderRadius: 8,
+    overflow: 'hidden',
+    margin: 10,
+    width: 200,
+    backgroundColor: 'white', // Set background color
+  },
+  picker: {
+    height: 40,
+    color: '#6F4E37',
   },
 });
 
