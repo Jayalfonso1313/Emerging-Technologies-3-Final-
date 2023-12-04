@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, ImageBackground, Text, Image, Picker } from 'react-native';
+import { View, TextInput, Button, StyleSheet, ImageBackground, Text, Image } from 'react-native';
 import CoffeeShopLogo from '../assets/coffee_shop_logo.png';
 
 const LoginPage = ({ navigation }) => {
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
+
+  const handleGenderChange = (text) => {
+    // Enforce uppercase for the first letter and lowercase for the rest
+    const formattedGender = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+    setGender(formattedGender);
+  };
 
   const proceedToHomePage = () => {
     if (name && age && gender) {
@@ -45,17 +51,13 @@ const LoginPage = ({ navigation }) => {
             onChangeText={(text) => setAge(text)}
             keyboardType="numeric"
           />
-          <View style={styles.pickerContainer}>
-            <Picker
-              style={styles.picker}
-              selectedValue={gender}
-              onValueChange={(itemValue) => setGender(itemValue)}
-            >
-              <Picker.Item label="Select Gender" value="" />
-              <Picker.Item label="Male" value="male" />
-              <Picker.Item label="Female" value="female" />
-            </Picker>
-          </View>
+          <TextInput
+            style={styles.input}
+            placeholder="Your Gender (Male/Female)"
+            placeholderTextColor="#6F4E37"
+            value={gender}
+            onChangeText={handleGenderChange}
+          />
           <View style={styles.buttonContainer}>
             <Button title="Enter" onPress={proceedToHomePage} color="#6F4E37" />
           </View>
@@ -76,10 +78,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   messageContainer: {
-    borderRadius: 8, 
+    borderRadius: 8,
     overflow: 'hidden',
     padding: 20,
-    backgroundColor: 'white', 
+    backgroundColor: 'white',
     elevation: 5,
     margin: 10,
     width: 260,
@@ -114,19 +116,6 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
     resizeMode: 'contain',
-  },
-  pickerContainer: {
-    borderColor: '#6F4E37',
-    borderWidth: 1,
-    borderRadius: 8,
-    overflow: 'hidden',
-    margin: 10,
-    width: 200,
-    backgroundColor: 'white', 
-  },
-  picker: {
-    height: 40,
-    color: '#6F4E37',
   },
 });
 

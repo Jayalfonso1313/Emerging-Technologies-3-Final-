@@ -1,5 +1,3 @@
-// ViewMenu.js
-
 import React, { useState } from 'react';
 import { View, Text, Button, Image, ImageBackground, FlatList, StyleSheet, Modal, Pressable } from 'react-native';
 import OrderStatus from './OrderStatus'; // Import OrderStatus component
@@ -10,11 +8,41 @@ const ViewMenu = ({ route, navigation }) => {
   const [isCartVisible, setIsCartVisible] = useState(false);
 
   const coffeeMenu = [
-    { id: 1, name: 'Espresso', price: 10, sizes: ['S', 'M', 'L'], image: require('../assets/Espresso.jpg') },
-    { id: 2, name: 'Latte', price: 20, sizes: ['S', 'M', 'L'], image: require('../assets/Latte.jpg') },
-    { id: 3, name: 'Cappuccino', price: 30, sizes: ['S', 'M', 'L'], image: require('../assets/Cappuccino.jpg') },
-    { id: 4, name: 'Mocha', price: 40, sizes: ['S', 'M', 'L'], image: require('../assets/Mocha.jpg') },
-    { id: 5, name: 'Americano', price: 50, sizes: ['S', 'M', 'L'], image: require('../assets/Americano.jpg') },
+    { 
+      id: 1, 
+      name: 'Espresso', 
+      prices: { S: 10, M: 50, L: 120 }, 
+      sizes: ['S', 'M', 'L'], 
+      image: require('../assets/Espresso.jpg') 
+    },
+    { 
+      id: 2, 
+      name: 'Latte', 
+      prices: { S: 15, M: 45, L: 80 }, 
+      sizes: ['S', 'M', 'L'], 
+      image: require('../assets/Latte.jpg') 
+    },
+    { 
+      id: 3, 
+      name: 'Cappuccino', 
+      prices: { S: 20, M: 60, L: 100 }, 
+      sizes: ['S', 'M', 'L'], 
+      image: require('../assets/Cappuccino.jpg') 
+    },
+    { 
+      id: 4, 
+      name: 'Mocha', 
+      prices: { S: 25, M: 55, L: 90 }, 
+      sizes: ['S', 'M', 'L'], 
+      image: require('../assets/Mocha.jpg') 
+    },
+    { 
+      id: 5, 
+      name: 'Americano', 
+      prices: { S: 30, M: 70, L: 110 }, 
+      sizes: ['S', 'M', 'L'], 
+      image: require('../assets/Americano.jpg') 
+    },
   ];
 
   const addToCart = (item, quantity, size) => {
@@ -35,7 +63,6 @@ const ViewMenu = ({ route, navigation }) => {
   };
 
   const renderOrderStatus = () => {
-    // Pass the necessary data to OrderStatus component
     navigation.navigate('OrderStatus', { name, total: calculateTotal(), itemsOrdered: cart });
   };
 
@@ -106,13 +133,7 @@ const CoffeeItem = ({ item, addToCart }) => {
 
   const handleAddToCart = () => {
     if (quantity > 0) {
-      let price = item.price;
-
-      // Double the price for M and L sizes
-      if (selectedSize === 'M' || selectedSize === 'L') {
-        price *= 2;
-      }
-
+      const price = item.prices[selectedSize];
       addToCart({ ...item, price }, quantity, selectedSize);
       setQuantity(0);
     }
@@ -122,8 +143,7 @@ const CoffeeItem = ({ item, addToCart }) => {
     <View key={`${item.id}-${selectedSize}`} style={styles.menuItem}>
       <Image source={item.image} style={styles.image} />
       <Text>
-        {item.name} - ₱
-        {(selectedSize === 'M' || selectedSize === 'L') ? (item.price * 2).toFixed(0) : item.price.toFixed(0)}
+        {item.name} - ₱{item.prices[selectedSize].toFixed(0)}
       </Text>
       <View style={styles.sizeContainer}>
         {item.sizes.map((size) => (
