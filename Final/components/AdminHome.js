@@ -1,21 +1,17 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Image } from 'react-native';
 
+const AdminHome = ({ navigation, route }) => {
+  const { adminName, userInfo } = route.params;
 
-const AdminHome = ({ navigation }) => {
   const navigateToInventory = () => {
-    // Handle navigation to Inventory screen
-    console.log('Navigating to Inventory');
     navigation.navigate('AdminInventory');
   };
 
-
   const navigateToAnalytics = () => {
-    // Handle navigation to Analytics screen
-    console.log('Navigating to Analytics');
-    navigation.navigate('AdminAnalytics');
+    // Pass user information to the AdminAnalytics screen
+    navigation.navigate('AdminAnalytics', { userInfo });
   };
-
 
   return (
     <ImageBackground
@@ -38,7 +34,6 @@ const AdminHome = ({ navigation }) => {
     </ImageBackground>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -83,6 +78,5 @@ const styles = StyleSheet.create({
     resizeMode: 'cover', // or 'stretch'
   },
 });
-
 
 export default AdminHome;

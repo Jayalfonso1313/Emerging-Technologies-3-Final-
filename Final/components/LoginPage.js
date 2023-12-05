@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { View, TextInput, Button, StyleSheet, ImageBackground, Text, Image } from 'react-native';
 import CoffeeShopLogo from '../assets/coffee_shop_logo.png';
 
@@ -7,15 +8,15 @@ const LoginPage = ({ navigation }) => {
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
 
-  const handleGenderChange = (text) => {
-    const formattedGender = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-    setGender(formattedGender);
-  };
-
   const proceedToHomePage = () => {
     if (name && age && gender) {
-      // Pass user data to HomePage screen
+      // Pass user information to HomePage
       navigation.navigate('HomePage', { name, age, gender });
+
+      // Reset the state variables to empty strings
+      setName('');
+      setAge('');
+      setGender('');
     } else {
       alert('Please fill in all fields.');
     }
@@ -53,10 +54,10 @@ const LoginPage = ({ navigation }) => {
           />
           <TextInput
             style={styles.input}
-            placeholder="Your Gender (Male/Female)"
+            placeholder="Gender (Male/Female)"
             placeholderTextColor="#6F4E37"
             value={gender}
-            onChangeText={handleGenderChange}
+            onChangeText={(text) => setGender(text)}
           />
           <View style={styles.buttonContainer}>
             <Button title="Enter" onPress={proceedToHomePage} color="#6F4E37" />
@@ -66,6 +67,9 @@ const LoginPage = ({ navigation }) => {
     </ImageBackground>
   );
 };
+
+
+
 
 const styles = StyleSheet.create({
   backgroundImage: {
@@ -116,6 +120,19 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
     resizeMode: 'contain',
+  },
+  pickerContainer: {
+    borderColor: '#6F4E37',
+    borderWidth: 1,
+    borderRadius: 8,
+    overflow: 'hidden',
+    margin: 10,
+    width: 200,
+    backgroundColor: 'white',
+  },
+  picker: {
+    height: 40,
+    color: '#6F4E37',
   },
 });
 

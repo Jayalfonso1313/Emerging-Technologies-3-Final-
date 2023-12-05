@@ -2,14 +2,15 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Image } from 'react-native';
 
 const HomePage = ({ navigation, route }) => {
-  const { name, age } = route.params;
+  const { name, age, gender } = route.params;
 
   const navigateToViewMenu = () => {
-    navigation.navigate('ViewMenu', { name, age });
+    navigation.navigate('ViewMenu', { name, age, gender });
   };
 
   const navigateToAdmin = () => {
-    navigation.navigate('Admin', { adminName: 'Admin' });
+    // Pass user information to the Admin screen
+    navigation.navigate('Admin', { adminName: 'Admin', userInfo: { name, age, gender } });
   };
 
   return (

@@ -3,7 +3,7 @@ import { View, TextInput, Button, Text, StyleSheet, ImageBackground } from 'reac
 import { useNavigation } from '@react-navigation/native';
 
 const AdminLogin = ({ route }) => {
-  const { adminName } = route.params;
+  const { adminName, userInfo } = route.params;
   const navigation = useNavigation();
 
   const [adminUsername, setAdminUsername] = useState('');
@@ -15,9 +15,9 @@ const AdminLogin = ({ route }) => {
       adminPassword,
     });
 
-    // For now, just log the adminName and navigate to AdminHome
+    // Pass user information to the AdminHome screen
     console.log('Logged in as:', adminName);
-    navigation.navigate('AdminHome'); // Navigate to AdminHome after successful login
+    navigation.navigate('AdminHome', { adminName, userInfo });
   };
 
   return (
@@ -50,6 +50,8 @@ const AdminLogin = ({ route }) => {
   );
 };
 
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -59,7 +61,7 @@ const styles = StyleSheet.create({
   messageContainer: {
     borderRadius: 10,
     padding: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.10)', // White background with 80% opacity
+    backgroundColor: 'rgba(255, 255, 255, 0.9)', // White background with 80% opacity
     elevation: 5,
   },
   input: {

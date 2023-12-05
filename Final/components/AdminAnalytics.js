@@ -1,92 +1,30 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, FlatList } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
-const AdminAnalytics = () => {
-  const [userData, setUserData] = useState([]);
-  const [name, setName] = useState('');
-  const [age, setAge] = useState('');
-  const [gender, setGender] = useState('');
-
-  const handleSaveData = () => {
-    const newUser = { name, age, gender };
-    setUserData((prevUserData) => [...prevUserData, newUser]);
-    // You can also save the data to a database or other storage mechanism here
-    // For simplicity, we're just storing it in the component state
-    clearForm();
-  };
-
-  const clearForm = () => {
-    setName('');
-    setAge('');
-    setGender('');
-  };
-
-  const renderUserItem = ({ item }) => (
-    <View style={styles.tableRow}>
-      <View style={styles.tableCell}>
-        <Text>{item.name}</Text>
-      </View>
-      <View style={styles.tableCell}>
-        <Text>{item.age}</Text>
-      </View>
-      <View style={styles.tableCell}>
-        <Text>{item.gender}</Text>
-      </View>
-    </View>
-  );
+const AdminAnalytics = ({ route }) => {
+  const { userInfo } = route.params;
+  const { name, age, gender } = userInfo || {};
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Analytics Page</Text>
-      <View style={styles.formContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Name"
-          value={name}
-          onChangeText={(text) => setName(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Age"
-          value={age}
-          onChangeText={(text) => setAge(text)}
-          keyboardType="numeric"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Gender"
-          value={gender}
-          onChangeText={(text) => setGender(text)}
-        />
-        <Button title="Save Data" onPress={handleSaveData} />
-      </View>
-      {/* User Data Table */}
-      <Text style={styles.subtitle}>User Data:</Text>
-      <View style={styles.tableHeader}>
-        <View style={styles.tableCell}>
-          <Text>Name</Text>
-        </View>
-        <View style={styles.tableCell}>
-          <Text>Age</Text>
-        </View>
-        <View style={styles.tableCell}>
-          <Text>Gender</Text>
-        </View>
-      </View>
-      {/* Display entered user data immediately */}
-      {userData.map((item, index) => (
-        <View key={index} style={styles.tableRow}>
-          <View style={styles.tableCell}>
-            <Text>{item.name}</Text>
+      {name && age && gender ? (
+        <View style={styles.table}>
+          <View style={styles.row}>
+            <Text style={styles.header}>Name</Text>
+            <Text style={styles.header}>Age</Text>
+            <Text style={styles.header}>Gender</Text>
           </View>
-          <View style={styles.tableCell}>
-            <Text>{item.age}</Text>
-          </View>
-          <View style={styles.tableCell}>
-            <Text>{item.gender}</Text>
+          <View style={styles.row}>
+            <Text style={styles.cell}>{name}</Text>
+            <Text style={styles.cell}>{age}</Text>
+            <Text style={styles.cell}>{gender}</Text>
           </View>
         </View>
-      ))}
+      ) : (
+        <Text>No user information available.</Text>
+      )}
+      {/* Add your analytics content here */}
     </View>
   );
 };
@@ -102,37 +40,29 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  formContainer: {
+  table: {
     width: '80%',
+    borderWidth: 1,
+    borderColor: '#ddd',
     marginBottom: 20,
   },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 10,
-    padding: 10,
-  },
-  subtitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 10,
-  },
-  tableHeader: {
-    flexDirection: 'row',
-    backgroundColor: '#f2f2f2',
-    padding: 10,
-    marginBottom: 5,
-  },
-  tableRow: {
+  row: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderBottomColor: '#f2f2f2',
-    padding: 10,
+    borderBottomColor: '#ddd',
   },
-  tableCell: {
+  header: {
     flex: 1,
-    alignItems: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
+    padding: 10,
+    textAlign: 'center',
+  },
+  cell: {
+    flex: 1,
+    fontSize: 16,
+    padding: 10,
+    textAlign: 'center',
   },
 });
 
